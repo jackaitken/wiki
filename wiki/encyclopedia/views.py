@@ -1,15 +1,41 @@
 from django.shortcuts import render
+from django import forms
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 from . import util
 
+class Search(forms.Form):
+    search = forms.CharField(label="Search Encyclopedia")
 
 def index(request):
-    return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries()
-    })
+    if request.method == "GET":
+        return render(request, "encyclopedia/index.html", {
+            "entries": util.list_entries(),
+            "form": Search()
+        })
+    else:
+        search = Search(request.POST)
+
+        if search.is_valid():
+            searched_entry = search.cleaned_data["search"]
+
+            for entry in util.list_entries():
+                if searched_entry.lower() == entry.lower():
+                    return HttpResponseRedirect(searched_entry)
+                elif searched_entry.lower() in entry.lower():
+                    return render(request, "encyclopedia/related.html", {
+                        "entry": entry,
+                        "title": entry.capitalize(),
+                        "form": Search()
+                    })
 
 def get_page(request, entry):
-    return render(request, f"encyclopedia/{entry}.html", {
-        "entry": util.get_entry(entry)
+    return render(request, "encyclopedia/entry.html", {
+        "entry": util.get_entry(entry),
+        "title": entry.capitalize(),
+        "form": Search()
     })
 
+def new_page(request):
+    return render(request, "encyclopedia/new_page.html")

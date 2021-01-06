@@ -1,0 +1,17 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block body %}
+<div>
+    <h1>{{ title }}</h1>
+</div>
+<div>
+    <p>
+        Did you mean <a href="{{ entry }}">{{ entry }}</a>?
+    </p>
+</div>
+
+{% endblock %}
