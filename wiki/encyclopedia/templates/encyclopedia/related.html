@@ -10,9 +10,9 @@
         {% if related %}
             <h1>Did you mean</h1>
             {% for entry in related %}
-            <a href="{{ entry }}">{{ entry }}</a>?
+                <a href="{{ entry }}">{{ entry }}</a>?
             {% endfor %}
-            
+
         {% else %}
             <h1>Sorry</h1>
             No results found for <strong>{{ searched_entry }}</strong>
