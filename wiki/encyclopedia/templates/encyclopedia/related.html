@@ -10,7 +10,7 @@
         {% if related %}
             <h1>Did you mean</h1>
             {% for entry in related %}
-                <a href="{{ entry }}">{{ entry }}</a>?
+                <a href="{% url 'wiki:entry' %}">{{ entry }}</a>?
             {% endfor %}
 
         {% else %}

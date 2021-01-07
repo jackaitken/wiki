@@ -13,6 +13,7 @@ class NewPageForm(forms.Form):
     new_entry = forms.CharField(widget=forms.Textarea)
 
 def index(request):
+
     if request.method == "GET":
         return render(request, "encyclopedia/index.html", {
             "entries": util.list_entries(),
@@ -35,17 +36,12 @@ def index(request):
                 elif searched_entry.lower() in entry.lower():
                     related.append(entry)
 
-            if related:
-                return render(request, "encyclopedia/related.html", {
-                    "related": related,
-                    "searched_entry": searched_entry,
-                    "title": entry.capitalize(),
-                    "form": Search()
-                })
-            else:
-                return render(request, "encyclopedia/related.html", {
-                    "searched_entry": searched_entry
-                })
+            return render(request, "encyclopedia/related.html", {
+                "related": related,
+                "searched_entry": searched_entry,
+                "title": entry.capitalize(),
+                "form": Search()
+            })
 
 def get_page(request, entry):
     return render(request, "encyclopedia/entry.html", {
@@ -53,6 +49,7 @@ def get_page(request, entry):
         "title": entry.capitalize(),
         "form": Search()
     })
+    
 
 def new_page(request):
     if request.method == "GET":

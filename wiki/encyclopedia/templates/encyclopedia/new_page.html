@@ -7,23 +7,12 @@
 {% block body %}
     <h1>Create a new entry</h1>
     
-    <form action="{% url 'new_page' %}" method="post">
+    <form action="{% url 'wiki:new_page' %}" method="post">
     {% csrf_token %}
     {{ new_entry_form }}
         <div>
             <input type="Submit">
         </div>
     </form>
-    
 
-    <!-- <form>
-        <div>
-            <input type="text" name="title" id="title" placeholder="Title">
-            <br><br>
-        </div>
-        <textarea name="message" spellcheck="true" rows="10" cols="30"
-        placeholder="Enter your text here. Feel free to use Markdown syntax."></textarea>
-        <br><br>
-        <input type="submit">
-    </form>     -->
 {% endblock %}
