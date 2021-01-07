@@ -20,25 +20,35 @@ def index(request):
         })
     else:
         search = Search(request.POST)
+        related = []
 
         if search.is_valid():
             searched_entry = search.cleaned_data["search"]
 
             for entry in util.list_entries():
                 if searched_entry.lower() == entry.lower():
-                    return HttpResponseRedirect(searched_entry)
-                elif searched_entry.lower() in entry.lower():
-                    return render(request, "encyclopedia/related.html", {
-                        "entry": entry,
+                    return render(request, "encyclopedia/entry.html", {
+                        "entry": util.get_entry(entry),
                         "title": entry.capitalize(),
                         "form": Search()
                     })
-            return render(request, "encyclopedia/related.html", {
-                "searched_entry": searched_entry
-            })
+                elif searched_entry.lower() in entry.lower():
+                    related.append(entry)
+
+            if related:
+                return render(request, "encyclopedia/related.html", {
+                    "related": related,
+                    "searched_entry": searched_entry,
+                    "title": entry.capitalize(),
+                    "form": Search()
+                })
+            else:
+                return render(request, "encyclopedia/related.html", {
+                    "searched_entry": searched_entry
+                })
 
 def get_page(request, entry):
-    return render(request, "encyclopedia/wiki/entry.html", {
+    return render(request, "encyclopedia/entry.html", {
         "entry": util.get_entry(entry),
         "title": entry.capitalize(),
         "form": Search()
