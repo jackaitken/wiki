@@ -8,6 +8,10 @@ from . import util
 class Search(forms.Form):
     search = forms.CharField(label="Search Encyclopedia")
 
+class NewPageForm(forms.Form):
+    title = forms.CharField()
+    new_entry = forms.CharField(widget=forms.Textarea)
+
 def index(request):
     if request.method == "GET":
         return render(request, "encyclopedia/index.html", {
@@ -29,6 +33,11 @@ def index(request):
                         "title": entry.capitalize(),
                         "form": Search()
                     })
+            return render(request, "encyclopedia/related.html", {
+                "entry": entry,
+                "title": entry.capitalize(),
+                "form": Search()
+            })
 
 def get_page(request, entry):
     return render(request, "encyclopedia/entry.html", {
@@ -38,4 +47,9 @@ def get_page(request, entry):
     })
 
 def new_page(request):
-    return render(request, "encyclopedia/new_page.html")
+    if request.method == "GET":
+        return render(request, "encyclopedia/new_page.html", {
+            "new_entry_form": NewPageForm(),
+            "form": Search()
+        })
+

@@ -1,16 +1,16 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    {{ title }}
+    Did you mean?
 {% endblock %}
 
 {% block body %}
 <div>
-    <h1>{{ title }}</h1>
+    <h1>Did you mean</h1>
 </div>
 <div>
     <p>
-        Did you mean <a href="{{ entry }}">{{ entry }}</a>?
+        <a href="{{ entry }}">{{ entry }}</a>?
     </p>
 </div>
 
