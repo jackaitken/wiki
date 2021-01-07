@@ -6,11 +6,14 @@
 
 {% block body %}
 <div>
-    <h1>Did you mean</h1>
-</div>
-<div>
     <p>
-        <a href="{{ entry }}">{{ entry }}</a>?
+        {% if entry %}
+            <h1>Did you mean</h1>
+            <a href="{{ entry }}">{{ entry }}</a>?
+        {% else %}
+            <h1>Sorry</h1>
+            No results found for <strong>{{ searched_entry }}</strong>
+        {% endif %}
     </p>
 </div>
 

@@ -34,13 +34,11 @@ def index(request):
                         "form": Search()
                     })
             return render(request, "encyclopedia/related.html", {
-                "entry": entry,
-                "title": entry.capitalize(),
-                "form": Search()
+                "searched_entry": searched_entry
             })
 
 def get_page(request, entry):
-    return render(request, "encyclopedia/entry.html", {
+    return render(request, "encyclopedia/wiki/entry.html", {
         "entry": util.get_entry(entry),
         "title": entry.capitalize(),
         "form": Search()
