@@ -44,11 +44,15 @@ def index(request):
             })
 
 def get_page(request, entry):
-    return render(request, "encyclopedia/entry.html", {
-        "entry": util.get_entry(entry),
-        "title": entry.capitalize(),
-        "form": Search()
-    })
+    if request.method == "GET":
+        return render(request, "encyclopedia/entry.html", {
+            "entry": util.get_entry(entry),
+            "title": entry.capitalize(),
+            "form": Search()
+        })
+    # else:
+    #   this is where we'll put logic for submitting the new edited text
+    
     
 
 def new_page(request):
@@ -57,4 +61,23 @@ def new_page(request):
             "new_entry_form": NewPageForm(),
             "form": Search()
         })
+
+    else:
+        new_post = NewPageForm(request.POST)
+
+        if new_post.is_valid():
+            title = new_post.cleaned_data["title"]
+            title = title.capitalize()
+            content = new_post.cleaned_data["new_entry"]
+
+            if title.capitalize() in util.list_entries():
+                return render(request, "encyclopedia/page_exists.html", {
+                    "title": title,
+                    "form": Search()
+                })
+
+            else:
+                util.save_entry(title, content)
+                return HttpResponseRedirect(reverse("wiki:page_entry", args={title}))
+
 
