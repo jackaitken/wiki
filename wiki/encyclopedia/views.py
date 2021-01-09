@@ -89,6 +89,13 @@ def edit_page(request, entry):
             "form": Search(),
             "edit_page_form": page_editing
         })
+    else:
+        edited_post = EditPage(request.POST)
+
+        if edited_post.is_valid():
+            content = edited_post.cleaned_data["edit_entry"]
+            util.save_entry(entry, content)
+            return HttpResponseRedirect(reverse("wiki:page_entry", args={entry}))
     
 
 
