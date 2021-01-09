@@ -6,16 +6,16 @@
 
 {% block body %}
 <div>
-    <h1>Editing: {{ title }}</h1>
+    <h1>Editing: {{ title }}</h1> 
 </div>
-<div>
-    <form action="{% url 'wiki:new_page' entry %}" method="post" value="{entry}">
-        {% csrf_token %}
-        {{ edit_page_form }}
-            <div>
-                <input type="Submit">
-            </div>
-        </form>
-</div>
+
+<form action="{% url 'wiki:edit_page' title %}" method="post">
+    {% csrf_token %}
+    {{ edit_page_form }}
+    <div>
+        <input type="Submit" value="Submit Edits">
+    </div>
+</form>
+
 
 {% endblock %}
