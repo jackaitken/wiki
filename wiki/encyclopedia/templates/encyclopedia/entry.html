@@ -14,9 +14,9 @@
     </p>
 </div>
 <div>
-    <button>
-        Edit the entry
-    </button>
+    <form action="{% url 'wiki:edit_page' %}">
+        <input type="submit" value="Edit this page" />
+    </form>
 </div>
 
 {% endblock %}

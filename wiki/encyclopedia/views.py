@@ -11,9 +11,12 @@ class Search(forms.Form):
 class NewPageForm(forms.Form):
     title = forms.CharField()
     new_entry = forms.CharField(widget=forms.Textarea)
+    
+class EditPage(forms.Form):
+    title = forms.CharField()
+    new_entry = forms.CharField(widget=forms.Textarea)
 
 def index(request):
-
     if request.method == "GET":
         return render(request, "encyclopedia/index.html", {
             "entries": util.list_entries(),
@@ -52,7 +55,7 @@ def get_page(request, entry):
         })
     # else:
     #   this is where we'll put logic for submitting the new edited text
-    
+
     
 
 def new_page(request):
@@ -79,5 +82,15 @@ def new_page(request):
             else:
                 util.save_entry(title, content)
                 return HttpResponseRedirect(reverse("wiki:page_entry", args={title}))
+
+def edit_page(request, entry):
+    if request.method == "GET":
+        return render(request, "encyclopedia/entry.html", {
+            "entry": util.get_entry(entry),
+            "title": entry.capitalize(),
+            "form": Search(),
+            "edit_page_form": EditPage()
+        })
+    
 
 
