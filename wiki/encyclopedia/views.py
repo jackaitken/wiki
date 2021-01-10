@@ -50,12 +50,21 @@ def index(request):
 
 def get_page(request, entry):
     if request.method == "GET":
-        html_entry = markdown2.markdown(util.get_entry(entry))
-        return render(request, "encyclopedia/entry.html", {
-            "entry": html_entry,
-            "title": entry.capitalize(),
+        for post in util.list_entries():
+            if entry.lower() == post.lower():
+                html_entry = markdown2.markdown(util.get_entry(entry))
+                return render(request, "encyclopedia/entry.html", {
+                    "entry": html_entry,
+                    "title": entry.capitalize(),
+                    "form": Search()
+                })
+
+        return render(request, "encyclopedia/page_not_found.html", {
+            "entry": entry,
             "form": Search()
         })
+
+
 
 def new_page(request):
     if request.method == "GET":
