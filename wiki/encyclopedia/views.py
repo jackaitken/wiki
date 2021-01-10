@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from random import randint
+import markdown2
+
 
 from . import util
 
@@ -31,7 +34,7 @@ def index(request):
             for entry in util.list_entries():
                 if searched_entry.lower() == entry.lower():
                     return render(request, "encyclopedia/entry.html", {
-                        "entry": util.get_entry(entry),
+                        "entry": markdown2.markdown(util.get_entry(entry)),
                         "title": entry.capitalize(),
                         "form": Search()
                     })
@@ -47,13 +50,12 @@ def index(request):
 
 def get_page(request, entry):
     if request.method == "GET":
+        html_entry = markdown2.markdown(util.get_entry(entry))
         return render(request, "encyclopedia/entry.html", {
-            "entry": util.get_entry(entry),
+            "entry": html_entry,
             "title": entry.capitalize(),
             "form": Search()
         })
-    # else:
-    #   this is where we'll put logic for submitting the new edited text
 
 def new_page(request):
     if request.method == "GET":
@@ -97,5 +99,7 @@ def edit_page(request, entry):
             util.save_entry(entry, content)
             return HttpResponseRedirect(reverse("wiki:page_entry", args={entry}))
     
-
-
+def random_page(request):
+    entry_list = util.list_entries()
+    selected_entry = entry_list[randint(0, len(entry_list))]
+    return HttpResponseRedirect(reverse("wiki:page_entry", args={selected_entry}))
